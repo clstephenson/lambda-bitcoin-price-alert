@@ -1,4 +1,4 @@
-package lamdbabitcoinpricealert;
+package lambdabitcoinpricealert;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.LambdaLogger;
@@ -11,7 +11,7 @@ import software.amazon.awssdk.services.cloudwatch.model.Dimension;
 import software.amazon.awssdk.services.cloudwatch.model.MetricDatum;
 import software.amazon.awssdk.services.cloudwatch.model.PutMetricDataRequest;
 
-// Handler value: lamdbabitcoinpricealert.Handler
+// Handler value: lambdabitcoinpricealert.Handler
 public class Handler implements RequestHandler<ScheduledEvent, Void> {
 
     @Override

@@ -21,4 +21,4 @@ deploy:
   memory_size: 512
   runtime: java11
   description: 'Get alerts for bitcoin price changes'
-  zip: ./target/lamdba-bitcoin-price-alert-1.0.jar
+  zip: ./target/lambda-bitcoin-price-alert-1.0.jar
