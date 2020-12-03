@@ -31,20 +31,37 @@ public class Handler implements RequestHandler<ScheduledEvent, Void> {
         return null;
     }
 
-    double getLastPriceForSymbol(String symbol) throws Exception {
+    public static void main(String[] args) {
+        UnauthenticatedApi apiInstance = new UnauthenticatedApi();
+        String symbol = "BTC-USD";
+        double bitcoinPrice;
         try {
+            bitcoinPrice = getLastPriceForSymbol("BTC-USD");
+            System.out.println(bitcoinPrice);
+        } catch (Exception e) {
+            System.err.println("[ERROR]: " + e.getMessage());
+            throw new RuntimeException(e.getMessage());
+        }
+    }
+
+    static double getLastPriceForSymbol(String symbol) throws Exception {
+        try {
+            //System.out.println("[DEBUG]: in getLastPriceForSymbol");
             UnauthenticatedApi apiInstance = new UnauthenticatedApi();
+            //System.out.println("[DEBUG]: apiInstance created");
             PriceEvent result = apiInstance.getTickerBySymbol(symbol);
+            //System.out.println("[DEBUG]: ticker retrieved");
             return result.getLastTradePrice();
         } catch (Exception e) {
             throw new Exception("Exception when calling UnauthenticatedApi#getTickerBySymbol", e);
         }
     }
 
-    void writeMetric(String metricName, double metricValue) {
+    static void writeMetric(String metricName, double metricValue) {
         var metricDatum = MetricDatum.builder()
                 .metricName(metricName)
                 .value(metricValue)
+                .unit("$")
                 .dimensions(Dimension.builder()
                         .name("Price")
                         .value("BitcoinLastPrice")
