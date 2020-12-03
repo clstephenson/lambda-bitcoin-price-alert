@@ -14,9 +14,14 @@ import software.amazon.awssdk.services.cloudwatch.model.PutMetricDataRequest;
 // Handler value: lambdabitcoinpricealert.Handler
 public class Handler implements RequestHandler<ScheduledEvent, Void> {
 
+    static LambdaLogger logger;
+    static boolean isDebug = false;
+
     @Override
     public Void handleRequest(ScheduledEvent event, Context context) {
-        LambdaLogger logger = context.getLogger();
+        isDebug = System.getenv("DEBUG") == "1";
+
+        logger = context.getLogger();
 
         UnauthenticatedApi apiInstance = new UnauthenticatedApi();
         String symbol = "BTC-USD";
@@ -45,12 +50,13 @@ public class Handler implements RequestHandler<ScheduledEvent, Void> {
     }
 
     static double getLastPriceForSymbol(String symbol) throws Exception {
+        if(isDebug) logger.log("[DEBUG]: in getLastPriceForSymbol");
+
         try {
-            //System.out.println("[DEBUG]: in getLastPriceForSymbol");
             UnauthenticatedApi apiInstance = new UnauthenticatedApi();
-            //System.out.println("[DEBUG]: apiInstance created");
+            if (isDebug) logger.log("[DEBUG]: apiInstance created");
             PriceEvent result = apiInstance.getTickerBySymbol(symbol);
-            //System.out.println("[DEBUG]: ticker retrieved");
+            if (isDebug) logger.log("[DEBUG]: ticker retrieved is (" + result.getLastTradePrice() + ")");
             return result.getLastTradePrice();
         } catch (Exception e) {
             throw new Exception("Exception when calling UnauthenticatedApi#getTickerBySymbol", e);
